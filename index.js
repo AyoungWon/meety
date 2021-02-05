@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 
 const { User } = require('./models/Users') 
 const config = require('./config/key')
+const { auth } = require('./middleware/auth')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
@@ -22,7 +23,7 @@ mongoose.connect(config.mongoURI, {
 
 app.get('/', (req, res) => res.send('Hello world!!!'))
 
-app.post('/register', (req,res)=> {
+app.post('/api/users/register', (req,res)=> {
   //회원가입 정보를 가져와서 데이터베이스에 넣기
   const user = new User(req.body)
   user.save((err, userInfo) => {
@@ -34,7 +35,7 @@ app.post('/register', (req,res)=> {
 
 })
 
-app.post('/login', (req,res) => {
+app.post('/api/users/login', (req,res) => {
   //요청된 이메일을 데이터베이스에서 찾기
   User.findOne({ email: req.body.email },(err, user)=> {
     if(!user) {
@@ -50,6 +51,7 @@ app.post('/login', (req,res) => {
         loginSuccess: false,
         message:"비밀번호 오류"
       })
+       //비밀번호가 맞다면 토큰생성
       user.generateToken((err,user) => {
         if(err) return res.status(400).send(err);
         //토큰을 (쿠키, 로컬스토리지 등에) 저장한다.
@@ -63,11 +65,26 @@ app.post('/login', (req,res) => {
 
     } )
   })
-  
-
-  //비밀번호가 맞다면 토큰생성
 })
 
+app.get('/api/users/auth', auth, (req,res) => {
+
+  //middleware(auth)를 통과해 auth가 true라는 말
+  res.status(200).json({
+    _id: req.user.id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name:req.user.name,
+    lastname: req.res.lastname,
+    role: req.user.role,
+    image:req.user.image 
+  })
+
+
+
+
+})
 
 
 app.listen(port, () => console.log(`Example app listening on ${port}!`))
