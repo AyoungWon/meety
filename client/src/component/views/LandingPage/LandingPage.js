@@ -9,7 +9,7 @@ function LandingPage() {
   }, [])
   return (
     <div style={{
-      display: 'flex'
+      display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh'
     }}>
       LandingPage
     </div>
