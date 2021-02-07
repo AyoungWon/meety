@@ -8,7 +8,9 @@ function LandingPage() {
     .then(response => {console.log(response)})
   }, [])
   return (
-    <div>
+    <div style={{
+      display: 'flex'
+    }}>
       LandingPage
     </div>
   )
