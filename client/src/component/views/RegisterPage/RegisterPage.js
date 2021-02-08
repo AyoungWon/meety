@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { registerUser } from '../../../_actions/user_action'
-
+import { withRouter } from 'react-router-dom'
 
 function ResisterPage(props) {
   const dispatch = useDispatch()
@@ -70,4 +70,4 @@ function ResisterPage(props) {
   )
 }
 
-export default ResisterPage
+export default withRouter(ResisterPage)
