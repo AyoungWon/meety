@@ -1,14 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 //import { response } from 'express'
 
 function LandingPage(props) {
 
+
+const [userInfo, setuserInfo] = useState(false)
+  
+  const loadItem = async () => {
+    axios
+      .get('/api/users/auth')
+      .then(( response ) => {
+        setuserInfo(response.data);
+        console.log(response.data)
+      })
+      .catch(e => {  // API 호출이 실패한 경우
+        console.error(e);  // 에러표시
+      
+      });
+  };
+
   useEffect(() => {
-    axios.get('/api/hello')
-    .then(response => {console.log(response)})
+    loadItem()
   }, [])
+     
+/*   useEffect(() => {
+    axios.get('/api/users/auth')
+    .then(response => {
+      setuserInfo(response.data);
+      console.log(response.data)})
+  }, []) */
 
   const onClickHandler = () => {
     axios.get('/api/users/logout')
@@ -27,7 +49,7 @@ function LandingPage(props) {
       display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh'
     }}>
       <h2>LandingPage</h2>
-      <button onClick = {onClickHandler} >Logout</button>
+      {userInfo.isAuth ? (<br/>):(<button onClick = {onClickHandler} >Logout</button>)}
     </div>
   )
 }
