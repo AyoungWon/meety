@@ -9,7 +9,9 @@ import {
 import LandingPage from './component/views/LandingPage/LandingPage';
 import LoginPage from './component/views/LoginPage/LoginPage';
 import RegisterPage from './component/views/RegisterPage/RegisterPage';
+import Room from './component/views/Room/Room'
 import Auth from './hoc/auth'
+import RoomView from './component/views/Room/RoomView';
 
 
 function App() {
@@ -18,7 +20,9 @@ function App() {
     <div>
  
       <Switch>
-        <Route exact path="/" component={Auth(LandingPage,null,true)} />
+        <Route exact path="/room" component={Auth(Room,null)} />
+        <Route exact path="/room/:roomId" component={Auth(RoomView,null)} />
+{/*         <Route exact path="/" component={Auth(LandingPage,null,true)} /> */}
         <Route exact path="/login" component={Auth(LoginPage, false)} />
         <Route exact path="/register" component={Auth(RegisterPage,false )} />
       </Switch>

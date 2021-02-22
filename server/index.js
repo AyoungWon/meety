@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const { v4: uuidv4 } = require('uuid')
 
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -21,7 +22,17 @@ mongoose.connect(config.mongoURI, {
   }).then(() => console.log('MonggoDB Connected..'))
   .catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send('Hello world!!!'))
+
+  app.get('/api/room', (req, res) => {
+    console.log('room')
+
+  })
+
+app.get('/api/room/:roomid', (req, res) => {
+  let roomid = req.params.roomId
+  console.log(roomid)
+  
+})
 
 app.get('/api/hello', (req, res) => {
   res.send('Hello world~~~')
