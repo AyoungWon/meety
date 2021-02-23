@@ -8,17 +8,26 @@ import 'antd/dist/antd.css';
 import { applyMiddleware, createStore} from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
-import Reducer from './_reducers';
+import rootReducer from './_reducers';
+import {camMaking} from './_actions/room_action'
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+const store = createStoreWithMiddleware(rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ &&
+  window.__REDUX_DEVTOOLS_EXTENSION__ ()
+)
 
+const unsubscribe = store.subscribe(() => {
+  console.log('@@@@@@@@')
+  console.log(store.getState())
+})
+
+// store.dispatch(camMaking())  
+unsubscribe()
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store = {createStoreWithMiddleware(Reducer,
-        window.__REDUX_DEVTOOLS_EXTENSION__ &&
-        window.__REDUX_DEVTOOLS_EXTENSION__ ()
-      )}>
+    <Provider store = {store}>
 
       <App />
     </Provider>

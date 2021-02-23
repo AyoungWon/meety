@@ -1,9 +1,9 @@
 //import axios from 'axios'
 import React, {useState} from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { loginUser } from '../../../_actions/user_action'
 import { withRouter } from 'react-router-dom'
- 
+
 function LoginPage(props) {
   const dispatch = useDispatch()
 
@@ -36,6 +36,8 @@ function LoginPage(props) {
 
 
   }
+
+  
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh'

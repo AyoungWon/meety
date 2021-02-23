@@ -1,15 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch,useSelector} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import uuid from 'react-uuid'
 import { camMaking } from '../../../_actions/room_action'
 
-function Room() {
-/*   useEffect(() => {
-  window.location.href=`/room/${uuid()}`
-
-  }, []) */
-
+function RoomData(props) {
+  const roomId = props.match.params.roomId
   const [stream, setStream] = useState();
   const dispatch = useDispatch()
   const userVideo = useRef();
@@ -18,11 +13,15 @@ function Room() {
     dispatch(camMaking())
     .then(response => {
       if(response){
+        console.log('response')
         console.log(response)
         setStream(response.payload)
+  
+        
       }
     })
     
+
   }, [])
 
 
@@ -32,8 +31,6 @@ function Room() {
     }
   }, [stream])
 
-  const streamData  = useSelector(state => state)
-  console.log(streamData)
 
   let UserVideo;
   if (stream) {
@@ -43,9 +40,8 @@ function Room() {
   }
   return (
     <div>
-    {UserVideo}
-  </div>
+      {UserVideo}
+    </div>
   )
-}
-
-export default withRouter(Room)
+  }
+export default withRouter(RoomData)
