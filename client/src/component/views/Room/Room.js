@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch,useSelector} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import uuid from 'react-uuid'
-import { camMaking } from '../../../_actions/room_action'
+import {camMaking} from '../../../_actions/room_action'
 
 function Room() {
 /*   useEffect(() => {
@@ -13,9 +13,10 @@ function Room() {
   const [stream, setStream] = useState();
   const dispatch = useDispatch()
   const userVideo = useRef();
-  useEffect(() => {
-
-    dispatch(camMaking())
+  useEffect(async () => {
+  	console.log(await camMaking());
+  	const stream = await camMaking();
+    dispatch(stream)
     .then(response => {
       if(response){
         console.log(response)

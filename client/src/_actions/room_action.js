@@ -1,11 +1,18 @@
 import { ROOM_USER } from './types'
 
-export function camMaking() {
-  const stream = navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-  return {
-    //action
-    type: ROOM_USER ,
-    payload: stream
-  }
-
+const camMaking = async () => {
+	try {
+		const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+		console.log(stream);
+		return {
+			type: ROOM_USER,
+			payload: stream
+		}
+	}
+	catch(e) {
+		console.log(e);
+	}
 }
+
+
+export { camMaking }

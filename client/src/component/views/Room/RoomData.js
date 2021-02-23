@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch,useSelector} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { camMaking } from '../../../_actions/room_action'
+import {camMaking} from '../../../_actions/room_action'
 
 function RoomData(props) {
   const roomId = props.match.params.roomId
