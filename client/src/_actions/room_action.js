@@ -14,5 +14,8 @@ const camMaking = async () => {
 	}
 }
 
+export const Making = () => dispatch => {
+ return dispatch(camMaking())
+};
 
 export { camMaking }

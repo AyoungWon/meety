@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
-const { v4: uuidv4 } = require('uuid')
+const server = require('http').Server(app);
+const io = require('socket.io')(server)
+const cors = require('cors');
+/* const { ExpressPeerServer } = require('peer')
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+}) */
 
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -9,9 +15,18 @@ const { User } = require('./models/Users')
 const config = require('./config/key')
 const { auth } = require('./middleware/auth')
 
+var ExpressPeerServer = require('peer').ExpressPeerServer
+var options = { debug: true }
+var peerExpress = require('express');
+var peerApp = peerExpress();
+var peerServer = require('http').createServer(peerApp);
+var peerPort = 9000;
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
+//app.use(cors());
+peerApp.use('/pp', ExpressPeerServer(peerServer, options));
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -28,11 +43,16 @@ mongoose.connect(config.mongoURI, {
 
   })
 
-app.get('/api/room/:roomid', (req, res) => {
-  let roomid = req.params.roomId
-  console.log(roomid)
-  
+io.on('connection', socket => {
+  socket.on('join-room', (roomId) => {
+    console.log('룸 조인')
+    socket.join(roomId)
+    socket.to(roomId).broadcast.emit('user-connected')
+  })
 })
+
+
+
 
 app.get('/api/hello', (req, res) => {
   res.send('Hello world~~~')
@@ -109,5 +129,5 @@ app.get('/api/users/logout',auth, (req,res) => {
 })
 
 const port = 5000
-app.listen(port, () => console.log(`Example app listening on ${port}!`))
-
+server.listen(port, () => console.log(`Example app listening on ${port}!`))
+peerServer.listen(peerPort);
