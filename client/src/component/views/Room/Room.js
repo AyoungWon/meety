@@ -1,8 +1,8 @@
-import React, {useEffect, useState, useRef} from 'react'
-import { useDispatch,useSelector} from 'react-redux'
+import React, {useEffect} from 'react'
+
 import { withRouter } from 'react-router-dom'
 import uuid from 'react-uuid'
-import io from "socket.io-client";
+
 
 function Room() {
   useEffect(() => {

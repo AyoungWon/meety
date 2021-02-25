@@ -9,7 +9,7 @@ import { applyMiddleware, createStore} from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
 import rootReducer from './_reducers';
-import {camMaking} from './_actions/room_action'
+
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 const store = createStoreWithMiddleware(rootReducer,

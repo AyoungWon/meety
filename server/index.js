@@ -2,11 +2,18 @@ const express = require('express')
 const app = express()
 const server = require('http').Server(app);
 const io = require('socket.io')(server)
+
+/* const peerExpress = require('express')
+const peerApp = peerExpress()
+const peerServer = require('http').Server(peerApp);
 const cors = require('cors');
-/* const { ExpressPeerServer } = require('peer')
-const peerServer = ExpressPeerServer(server, {
+const { ExpressPeerServer } = require('peer')
+const PeerServer = ExpressPeerServer(peerServer, {
   debug: true
 }) */
+
+const { PeerServer } = require('peer');
+const peerServer = PeerServer({ port: 9000, path: '/myapp' });
 
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -15,18 +22,11 @@ const { User } = require('./models/Users')
 const config = require('./config/key')
 const { auth } = require('./middleware/auth')
 
-var ExpressPeerServer = require('peer').ExpressPeerServer
-var options = { debug: true }
-var peerExpress = require('express');
-var peerApp = peerExpress();
-var peerServer = require('http').createServer(peerApp);
-var peerPort = 9000;
-
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
-//app.use(cors());
-peerApp.use('/pp', ExpressPeerServer(peerServer, options));
+
+app.use('/peerjs', PeerServer)
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -44,10 +44,10 @@ mongoose.connect(config.mongoURI, {
   })
 
 io.on('connection', socket => {
-  socket.on('join-room', (roomId) => {
+  socket.on('join-room', (roomId, userId) => {
     console.log('룸 조인')
     socket.join(roomId)
-    socket.to(roomId).broadcast.emit('user-connected')
+    socket.to(roomId).broadcast.emit('user-connected', userId)
   })
 })
 
@@ -129,5 +129,6 @@ app.get('/api/users/logout',auth, (req,res) => {
 })
 
 const port = 5000
+const peerPort = 8000
 server.listen(port, () => console.log(`Example app listening on ${port}!`))
-peerServer.listen(peerPort);
+//peerServer.listen(peerPort)

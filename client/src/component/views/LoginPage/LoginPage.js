@@ -1,6 +1,6 @@
 //import axios from 'axios'
 import React, {useState} from 'react'
-import { useDispatch, useSelector} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { loginUser } from '../../../_actions/user_action'
 import { withRouter } from 'react-router-dom'
 
