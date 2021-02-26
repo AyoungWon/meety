@@ -29,23 +29,18 @@ mongoose.connect(config.mongoURI, {
   .catch(err => console.log(err))
 
 
-  app.get('/api/room', (req, res) => {
-    console.log('room')
-
-  })
 let ROOM_ID
 io.on('connection', socket => {
-  socket.on('join-room', (roomId, userId) => {
-    console.log('룸 조인')
+  socket.on('join-room', (roomId, userId, nick) => {
+    console.log('룸 조인', nick)
     socket.join(roomId);
-    socket.to(roomId).broadcast.emit('user-connected', userId);
-    socket.on('testing', a => {
-      console.log(a)
-    })
+    socket.to(roomId).broadcast.emit('user-connected', userId, nick);
+    io.to(ROOM_ID).emit('userEnterMsg', nick)
     ROOM_ID = roomId
   })
 
   socket.on('message', message => {
+    console.log(message)
     io.to(ROOM_ID).emit('createMessage', message)
   })
 })

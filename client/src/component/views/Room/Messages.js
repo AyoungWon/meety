@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Messages(props) {
-  console.log('messaggggggg')
-  console.log(props)
+function Messages({chat}) {
+  console.log(chat)
   return (
     <li>
-      <p>{props.chat}</p>
+      {chat.nickName ? (<p><span>{chat.nickName}:</span>{chat.text}</p>) : (<p><span>{chat.nickName}</span>{chat.text}</p>)}
+      
     </li>
   )
 }

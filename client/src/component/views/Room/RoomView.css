@@ -1,4 +1,39 @@
 .room-wrap {
+  position: relative;
+}
+
+.room-enter-wrap {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.9);
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nickName-wrap {
+color: #f8f8f8;
+}
+
+.nickName-wrap label {
+
+}
+
+.nickName-wrap input{
+width: 200px;
+margin: 0 1rem;
+color: black;
+}
+
+.nickName-wrap button{
+background-color: transparent;
+border: none;
+}
+
+
+.room-view-wrap {
   height: 100vh;
   display: flex;
   background-color: #777;
@@ -7,6 +42,7 @@
 #left-section {
   display: flex;
   flex: 0.7;
+  flex-direction: column;
 
 }
 
@@ -15,11 +51,37 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  flex: 1;
 }
 
 .video-grid video {
   width: 400px;
   height: 300px;
+}
+
+.room-menu {
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  background-color: #333;
+}
+
+.room-menu > div {
+  height: 100%;
+}
+
+.room-menu button {
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  border: none;
+  color: #f8f8f8;
+  font-size: 1.25rem;
+}
+
+.room-menu button:focus {
+  outline: none;
+  border: none;
 }
 
 #right-section {
@@ -41,6 +103,14 @@
 
 .chat-window ul {
   list-style: none;
+  padding: 20px;
+  margin: 0;
+}
+.chat-window p {
+  margin: 0;
+}
+.chat-window p span{
+  font-weight: bold;
 }
 
 .massage-input input {
