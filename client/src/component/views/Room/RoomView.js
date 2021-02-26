@@ -4,21 +4,24 @@ import { withRouter } from 'react-router-dom'
 import io from "socket.io-client";
 import Peer from 'peerjs';
 import './RoomView.css'
+import Chating from './Chating';
 
 
 function RoomView(props) {
   const ROOM_ID = props.match.params.roomId
-  //const socket = io('http://localhost:5000', {transports: ['websocket', 'polling', 'flashsocket']});
+  const socket = io('http://localhost:5000', {transports: ['websocket', 'polling', 'flashsocket']});
   const [Stream, setStream] = useState();
   const [Parter, setParter] = useState()
+
   const userVideo = useRef();
   const partnerVideo = useRef();
-  let socket = useRef();
+
   let peer;
   let myStream;
+  const test = 'test'
 
   useEffect(() => {
-    socket = io('http://localhost:5000', {transports: ['websocket', 'polling', 'flashsocket']});
+    //socket = io('http://localhost:5000', {transports: ['websocket', 'polling', 'flashsocket']});
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
       myStream = stream
@@ -30,9 +33,6 @@ function RoomView(props) {
           partnerVideo.current.srcObject = stream;
         })
       })
-      socket.on('user-connected', (userId) => {
-        connetToNewUser(userId, stream)
-      })
       const connetToNewUser = (userId, Stream) => {
         console.log('new user', userId, Stream)
         const call = peer.call(userId, Stream)
@@ -40,12 +40,14 @@ function RoomView(props) {
           setParter(userVideoStream)
           console.log(partnerVideo)
           partnerVideo.current.srcObject = userVideoStream;
-    
+        })
+      }
+      socket.on('user-connected', (userId) => {
+        console.log(userId)
+        connetToNewUser(userId, myStream)
       })
-    }
-
     })
-
+   
     peer = new Peer(undefined, {
       host: '/',
       port: 9000,
@@ -58,13 +60,8 @@ function RoomView(props) {
     })
 
   
-
-  
-
   }, [])
 
-
-  
   console.log('@@@@')
   
   useEffect(() => {
@@ -89,13 +86,23 @@ function RoomView(props) {
     );
   }
 
- 
 
   return (
-    <div className="video-grid">
-    {UserVideo}
-    {PartnerVideo}
-  </div>
+    <div className="room-wrap"> 
+      <section id="left-section">
+      <div className="video-grid">
+        {UserVideo}
+        {PartnerVideo}
+      </div>
+      </section>
+      <section id="right-section">
+        <Chating socket={socket}/>
+        
+
+      </section>
+
+    </div>
+
   )
 
 }
