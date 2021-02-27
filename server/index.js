@@ -37,12 +37,18 @@ io.on('connection', socket => {
     socket.to(roomId).broadcast.emit('user-connected', userId, nick);
     io.to(ROOM_ID).emit('userEnterMsg', nick)
     ROOM_ID = roomId
+
+  socket.on('disconnect', () => {
+    socket.to(ROOM_ID).broadcast.emit('user-disconnected', userId)
+    io.to(ROOM_ID).emit('userExitMsg', nick)
+  })
   })
 
   socket.on('message', message => {
     console.log(message)
     io.to(ROOM_ID).emit('createMessage', message)
   })
+
 })
 
 

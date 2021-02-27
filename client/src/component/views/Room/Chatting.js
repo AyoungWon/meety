@@ -12,6 +12,7 @@ function Chatting({socket,nick,partner}) {
     nickName:nick
   });
   const [UserEnterMsg, setUserEnterMsg] = useState('')
+  const [UserExitMsg, setUserExitMsg] = useState('')
 
  const onInputHandler = (e) => {
   setTextTyping({
@@ -44,6 +45,14 @@ function Chatting({socket,nick,partner}) {
       })
     }
   })
+  socket.on('userExitMsg', nick => {
+    if(nick !== null){
+      setUserExitMsg({
+        text: `${nick}님이 퇴장하셨습니다.`,
+        color: [0,0,0]
+      })
+    }
+  })
 
  }, [])
 
@@ -62,6 +71,14 @@ function Chatting({socket,nick,partner}) {
     setUserEnterMsg({text:''})
    }
 }, [UserEnterMsg]);
+
+ useEffect(() => {
+   if(UserExitMsg.text){
+    UserExitMsg.text.length > 0 && setChatMonitor([...ChatMonitor, UserExitMsg] );
+    scrollToBottom();
+    setUserExitMsg({text:''})
+   }
+}, [UserExitMsg]);
 
 
 

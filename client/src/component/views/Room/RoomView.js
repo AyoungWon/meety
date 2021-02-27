@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useRef} from 'react'
-import { useDispatch,useSelector, useStore} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import io from "socket.io-client";
 import Peer from 'peerjs';
@@ -23,13 +22,13 @@ function RoomView(props) {
   const [NickName, setNickName] = useState()
   const [Render, setRender] = useState(true)
   const [PartnerName, setPartnerName] = useState('')
-
+  
   let peer;
   let myStream;
-  const test = 'test'
+  const peers = {}
+
 
   useEffect(() => {
-    //socket = io('http://localhost:5000', {transports: ['websocket', 'polling', 'flashsocket']});
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
       myStream = stream
@@ -42,18 +41,32 @@ function RoomView(props) {
         })
       })
       const connetToNewUser = (userId, Stream, nick) => {
-        console.log('new user', userId, Stream)
+        //console.log('new user', userId, Stream)
         const call = peer.call(userId, Stream)
         call.on('stream',  userVideoStream => {
           setParter(userVideoStream)
-          console.log(partnerVideo)
           partnerVideo.current.srcObject = userVideoStream;
         })
+
+        call.on('close', () => {
+        UserVideo = (null)
+          
+        })
+      
+        peers[userId] = call
       }
       socket.on('user-connected', (userId, nick) => {
-        console.log(userId)
         setPartnerName(nick)
         connetToNewUser(userId, myStream)
+      })
+
+      socket.on('user-disconnected', userId => {
+        if (peers[userId]) {
+          peers[userId].close()
+         
+        }
+        videoRemove()
+          console.log('#####')
       })
     })  
   }, [])
@@ -88,8 +101,14 @@ function RoomView(props) {
   let PartnerVideo;
   if (Parter) {
     PartnerVideo = (
-      <video playsInline ref={partnerVideo} muted autoPlay />
+      <video id="partnerVideoView" playsInline ref={partnerVideo} muted autoPlay />
     );
+  }
+
+  const videoRemove = () => {
+    console.log('@@@@@@@@@')
+    PartnerVideo = null
+    setParter(null)
   }
 
   const muteToggleBtn = () => {
@@ -139,7 +158,9 @@ function RoomView(props) {
             <button id="video-btn" onClick={videoToggleBtn}>{VideoStopImage}</button>
           </div>
           <div className="exit-btn">
-            <button id="exit-btn" ><FontAwesomeIcon icon={faDoorOpen}/></button>
+            <a href='/'>
+            <button id="exit-btn"><FontAwesomeIcon icon={faDoorOpen}/></button>
+            </a>
           </div>
         </div>
         </section>
