@@ -29,6 +29,7 @@ function RoomView(props) {
 
 
   useEffect(async() => {
+    props.nav()
  
     await setNickName(window.sessionStorage.getItem("nickName"))
  

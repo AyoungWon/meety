@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { registerUser } from '../../../_actions/user_action'
 import { withRouter } from 'react-router-dom'
+import './RegisterPage.css'
 
 function ResisterPage(props) {
   const dispatch = useDispatch()
@@ -48,12 +49,9 @@ function ResisterPage(props) {
 
 
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh'
-    }}>
-      <form style={{
-        display: 'flex', flexDirection: 'column'
-      }}
+    <div className="register-wrap" >
+      <h2>회원가입</h2>
+      <form 
       onSubmit={onSubmitHandler}>
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler}/>
@@ -64,7 +62,7 @@ function ResisterPage(props) {
         <label>Confirm Password</label>
         <input type="password" value={ConfirmPassword} onChange={onConfirmPasswordHandler}/>
         <br/>
-        <button type="submit">회원가입</button>
+        <button type="submit">완료</button>
       </form>
     </div>
   )

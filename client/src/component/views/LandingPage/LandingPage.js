@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-//import { response } from 'express'
+import './LandingPage.css'
 
 function LandingPage(props) {
 
@@ -45,11 +45,17 @@ const [userInfo, setuserInfo] = useState(false)
 
 
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh'
-    }}>
-      <h2>LandingPage</h2>
-      {userInfo.isAuth ? (<br/>):(<button onClick = {onClickHandler} >Logout</button>)}
+    <div className="landing-wrap" >
+      <h2>HELLO! WELCOM TO <span className="color-highlight">MEETY</span> </h2>
+      <h3>MEETY는 <span className="color-highlight">1:1 화상채팅 서비스</span>입니다. 다자간 화상채팅은 서비스되지 않습니다</h3>
+      <ul>
+      <h3>요구사항</h3>
+      <li>Chrome 브라우저 이용을 권장합니다</li>
+      <li>카메라와 마이크 권한 설정을 필요로 합니다</li>
+      <li>로그인하신 후 채팅에 입장해주세요</li>
+      </ul>
+
+{/*       {userInfo.isAuth ? (<br/>):(<button onClick = {onClickHandler} >Logout</button>)} */}
     </div>
   )
 }

@@ -1,0 +1,31 @@
+.landing-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.landing-wrap h2 {
+  font-size: 3rem;
+}
+
+.landing-wrap h2, h3, h4, li, ul{
+  color: #7c7566 !important;
+}
+
+.landing-wrap .color-highlight {
+  color: #3b4791;
+}
+
+.landing-wrap ul {
+  list-style: none;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 4px solid #7c7566;
+  padding: 20px;
+  margin-top: 1.5rem;
+}

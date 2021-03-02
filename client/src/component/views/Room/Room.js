@@ -37,7 +37,7 @@ function Room() {
   }
 
  return (
-  <div>
+  <div className="room">
     <div className="room-main">
       <p id="greeting">안녕하세요! <span id="name">{NickName}</span> 님</p>
       <ul>
