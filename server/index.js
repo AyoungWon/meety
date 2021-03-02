@@ -2,13 +2,10 @@ const express = require('express')
 const app = express()
 const server = require('http').Server(app);
 const io = require('socket.io')(server)
-
 const { PeerServer } = require('peer');
 const peerServer = PeerServer({ port: 9000, path: '/myapp' });
-
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-
 const { User } = require('./models/Users') 
 const config = require('./config/key')
 const { auth } = require('./middleware/auth')
@@ -16,7 +13,6 @@ const { auth } = require('./middleware/auth')
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
-
 app.use('/myapp', PeerServer)
 
 const mongoose = require('mongoose')
@@ -32,7 +28,6 @@ mongoose.connect(config.mongoURI, {
 let ROOM_ID
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId, nick) => {
-    console.log('룸 조인', nick)
     socket.join(roomId);
     socket.to(roomId).broadcast.emit('user-connected', userId, nick);
     io.to(roomId).emit('userEnterMsg', nick)
@@ -40,17 +35,13 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     socket.to(ROOM_ID).broadcast.emit('user-disconnected', userId)
     io.to(ROOM_ID).emit('userExitMsg', nick)
+    })
   })
-  })
-
   socket.on('message', message => {
     console.log(message)
     io.to(ROOM_ID).emit('createMessage', message)
   })
-
 })
-
-
 
 
 app.get('/api/hello', (req, res) => {
@@ -128,6 +119,5 @@ app.get('/api/users/logout',auth, (req,res) => {
 })
 
 const port = 5000
-const peerPort = 8000
 server.listen(port, () => console.log(`Example app listening on ${port}!`))
-//peerServer.listen(peerPort)
+

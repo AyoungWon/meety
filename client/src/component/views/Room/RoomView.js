@@ -6,7 +6,6 @@ import './RoomView.css'
 import Chatting from './Chatting';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faDoorOpen } from '@fortawesome/free-solid-svg-icons'
-import RoomEnter from './RoomEnter';
 
 function RoomView(props) {
   const ROOM_ID = props.match.params.roomId

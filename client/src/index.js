@@ -17,14 +17,6 @@ const store = createStoreWithMiddleware(rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ ()
 )
 
-const unsubscribe = store.subscribe(() => {
-  console.log('@@@@@@@@')
-  console.log(store.getState())
-})
-
-// store.dispatch(camMaking())  
-unsubscribe()
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store = {store}>
