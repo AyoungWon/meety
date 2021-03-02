@@ -1,0 +1,113 @@
+.room-wrap {
+  position: relative;
+}
+
+.room-enter-wrap {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color:#f8f8f8;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.room-enter-wrap h2 {
+  font-size: 2rem;
+  color: #3b4791;
+}
+
+.nickName-wrap {
+background-color: #3b4791;
+color: #f8f8f8;
+padding: 24px;
+border-radius: 4px;
+font-size: 1rem;
+}
+
+.nickName-wrap input{
+width: 300px;
+margin: 0 1rem;
+color: black;
+height: 50px;
+}
+
+.nickName-wrap input:focus{
+  outline: none;
+}
+
+.nickName-wrap button{
+background-color: transparent;
+border: none;
+font-weight: bold;
+cursor: pointer;
+}
+
+
+.room-main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.room-main #greeting {
+  font-size: 3rem;
+  color: #7c7566;
+  margin-bottom: 0.25em;
+}
+
+.room-main #name {
+  color: #3b4791;
+  font-weight: bold;
+}
+
+.room-main ul {
+  list-style: none;
+  color: #777;
+  text-align: center;
+  padding: 0;
+}
+
+.room-main a {
+  color: #fff;
+  background-color: #3b4791;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.room-main a:hover {
+  color: #fff;
+}
+
+.room-main input {
+  width: 300px;
+  margin-right: 1rem;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.room-main input:focus {
+outline: none;
+}
+
+.room-main li {
+  margin-bottom: 1rem;
+}
+
+.room-main button {
+  background-color: transparent;
+  border: none;
+}
+
+.room-main button:focus {
+outline: none;
+}
+
+.room-main button:hover {
+  border-bottom: 1px solid #777;
+  cursor: pointer;
+}

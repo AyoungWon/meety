@@ -20,69 +20,86 @@ function RoomView(props) {
   const userVideo = useRef();
   const partnerVideo = useRef();
   const [NickName, setNickName] = useState()
-  const [Render, setRender] = useState(true)
   const [PartnerName, setPartnerName] = useState('')
+  const [Render, setRender] = useState(false)
   
   let peer;
   let myStream;
   const peers = {}
 
 
-  useEffect(() => {
+  useEffect(async() => {
+ 
+    await setNickName(window.sessionStorage.getItem("nickName"))
+ 
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
       myStream = stream
       setStream(stream)
+      peer = new Peer(undefined, {
+        host: '/',
+        port: 9000,
+        path: '/myapp',
+        stream : Stream
+      });
+  
+     
+
       peer.on('call', call => {
+        console.log('새로 들어온 유저')
         call.answer(stream)
         call.on('stream', stream => {
           setParter(stream)
           partnerVideo.current.srcObject = stream;
-        })
-      })
-      const connetToNewUser = (userId, Stream, nick) => {
-        //console.log('new user', userId, Stream)
-        const call = peer.call(userId, Stream)
-        call.on('stream',  userVideoStream => {
-          setParter(userVideoStream)
-          partnerVideo.current.srcObject = userVideoStream;
-        })
-
-        call.on('close', () => {
-        UserVideo = (null)
-          
-        })
-      
-        peers[userId] = call
-      }
-      socket.on('user-connected', (userId, nick) => {
-        setPartnerName(nick)
-        connetToNewUser(userId, myStream)
-      })
-
-      socket.on('user-disconnected', userId => {
-        if (peers[userId]) {
-          peers[userId].close()
+          console.log(sessionStorage.getItem("nickName"))
          
-        }
-        videoRemove()
-          console.log('#####')
+        })
       })
+
+      peer.on('open', id => {
+        socket.emit('join-room', ROOM_ID, id, sessionStorage.getItem("nickName"))
+      })
+      
     })  
+
+
+
+   setRender(true)
   }, [])
 
   useEffect(() => {
+    const connetToNewUser = (userId, Stream, nick) => {
+      //console.log('new user', userId, Stream)
+      const call = peer.call(userId, Stream)
+      call.on('stream',  userVideoStream => {
+        console.log("기존 유저")
+        setParter(userVideoStream)
+        partnerVideo.current.srcObject = userVideoStream;
+      })
 
-    peer = new Peer(undefined, {
-      host: '/',
-      port: 9000,
-      path: '/myapp',
-      stream : Stream
-    });
-
-    peer.on('open', id => {
-      socket.emit('join-room', ROOM_ID, id, NickName)
+      call.on('close', () => {
+      UserVideo = (null)
+        
+      })
+    
+      peers[userId] = call
+    }
+    socket.on('user-connected', (userId, nick) => {
+      setPartnerName(nick)
+      connetToNewUser(userId, myStream)
+      console.log(nick)
     })
+
+    socket.on('user-disconnected', userId => {
+      if (peers[userId]) {
+        peers[userId].close()
+       
+      }
+      videoRemove()
+        console.log('#####')
+    })
+  
+    
   }, [Render])
 
   useEffect(() => {
@@ -136,13 +153,7 @@ function RoomView(props) {
     }
   }
 
-  const handleNickname = (e) => {
-    setNickName(e.currentTarget.value)
-  }
-
-  const sendNickName = () => {
-    setRender(false)
-  }
+ 
 
   return (
     <div className="room-wrap" >
@@ -171,14 +182,6 @@ function RoomView(props) {
           partner={PartnerName}/>
         </section>
       </div>
- 
-      <RoomEnter 
-      render={Render}
-      nick={NickName}
-      handleNickname={handleNickname}
-      sendNickName={sendNickName}
-      />
-
     </div>
 
 

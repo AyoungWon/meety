@@ -35,9 +35,8 @@ io.on('connection', socket => {
     console.log('룸 조인', nick)
     socket.join(roomId);
     socket.to(roomId).broadcast.emit('user-connected', userId, nick);
-    io.to(ROOM_ID).emit('userEnterMsg', nick)
+    io.to(roomId).emit('userEnterMsg', nick)
     ROOM_ID = roomId
-
   socket.on('disconnect', () => {
     socket.to(ROOM_ID).broadcast.emit('user-disconnected', userId)
     io.to(ROOM_ID).emit('userExitMsg', nick)

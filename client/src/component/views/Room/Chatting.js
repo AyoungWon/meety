@@ -39,6 +39,7 @@ function Chatting({socket,nick,partner}) {
   })
   socket.on('userEnterMsg', nick => {
     if(nick !== null){
+      console.log(nick)
       setUserEnterMsg({
         text: `${nick}님이 입장하셨습니다.`,
         color: [0,0,0]
@@ -46,6 +47,7 @@ function Chatting({socket,nick,partner}) {
     }
   })
   socket.on('userExitMsg', nick => {
+  
     if(nick !== null){
       setUserExitMsg({
         text: `${nick}님이 퇴장하셨습니다.`,
@@ -85,7 +87,7 @@ function Chatting({socket,nick,partner}) {
 
   return (
     <div className="chat-wrap">
-        <div className="chat-header"><h2>채팅</h2></div>
+        <div className="chat-header"><h2>Messages</h2></div>
         <div id="chatMonitor" className="chat-window ">
           <ul className="massages">
             {ChatMonitor && ChatMonitor.map((chat, index) => (
@@ -101,6 +103,7 @@ function Chatting({socket,nick,partner}) {
         <input id="chat_message" 
           type="text" 
           placeholder="Type message here..." 
+          autocomplete="off"
           value={TextTyping.text||''}
           onKeyDown={onInputEnter}
           onChange={onInputHandler} />
